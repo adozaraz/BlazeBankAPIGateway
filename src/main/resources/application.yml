@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: blazeapigatewayservice
+  cloud:
+    gateway:
+      routes:
+        - id: saveCard
+          predicates:
+            - Path=/card/saveCard
+          uri: localhost:8081
+        - id: getCardByUserId
+          predicates:
+            - Path=/card/getCardByUserId
+          uri: localhost:8082
+        - id : transferMoney
+          predicates:
+            - Path=/payment/transferMoney
+          uri: localhost:8088
+        - id: login
+          predicates:
+            - Path=/security/login
+          uri: localhost:8088
+        - id: register
+          predicates:
+            - Path=/security/register
+          uri: localhost:8088
+        - id: getUserById
+          predicates:
+            - Path=/user/getUserById
+          uri: localhost:8088
