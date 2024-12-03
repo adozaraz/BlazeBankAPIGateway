@@ -20,7 +20,7 @@ public class DiscoveryConfig {
             frontendUrl = frontendUrl.substring(0, frontendUrl.length()-1);
         }
         return builder.routes()
-                .route("music-service", r -> r.path("/musics/**")
+                .route("card-service", r -> r.path("/card/**")
                         .filters(gatewayFilterSpec -> gatewayFilterSpec.tokenRelay().removeRequestHeader("Cookie"))
                         .uri("lb://MUSIC-SERVICE/musics"))
                 .route("frontend-service", r -> r.path("/frontend/**")
