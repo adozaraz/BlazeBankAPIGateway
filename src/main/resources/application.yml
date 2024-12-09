@@ -17,11 +17,24 @@ spring:
               - offline_access
               - profile
             authorization-grant-type: authorization_code
+  cloud:
+    gateway:
+      default-filters:
+        - TokenRelay=
+        - RemoveRequestHeader=Cookie
+
 logging:
   level:
     org:
       springframework:
         web: DEBUG
 
-frontend:
-  url: ${FRONTEND_URL:http://127.0.0.1:3000}
+server:
+  port: 8100
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+  instance:
+    preferIpAddress: true
