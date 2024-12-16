@@ -22,11 +22,12 @@ public class DiscoveryConfig {
         return builder.routes()
                 .route("card-service", r -> r.path("/card/**")
                         .filters(gatewayFilterSpec -> gatewayFilterSpec.tokenRelay().removeRequestHeader("Cookie"))
-                        .uri("lb://MUSIC-SERVICE/musics"))
-                .route("frontend-service", r -> r.path("/frontend/**")
+                        .uri("lb://blazebankcardservice/card"))
+                .route("payment-service", r -> r.path("/payment/**")
+                        .filters(gatewayFilterSpec -> gatewayFilterSpec.tokenRelay().removeRequestHeader("Cookie"))
+                        .uri("lb://blazebankpaymentservice/payment"))
+                .route("frontend-service", r -> r.path("/**")
                         .uri(frontendUrl))
-                .route("frontend-service", r -> r.path("/static/**")
-                        .uri("%s/static".formatted(frontendUrl)))
                 .build();
     }
 

@@ -3,6 +3,7 @@ package ru.ssau.blazebankapigateway.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.oauth2.client.oidc.web.server.logout.OidcClientInitiatedServerLogoutSuccessHandler;
@@ -35,8 +36,10 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) throws Exception {
         http.authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec.anyExchange().authenticated())
-                .oauth2Login(oAuth2LoginSpec -> oAuth2LoginSpec.authenticationSuccessHandler(new RedirectServerAuthenticationSuccessHandler("http://localhost:8100/frontend")))
+                .oauth2Login(oAuth2LoginSpec -> oAuth2LoginSpec.authenticationSuccessHandler(new RedirectServerAuthenticationSuccessHandler("http://homelab.adozaraz.com:8100/")))
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+//                .cors(cors -> cors.disable())
+                .csrf(csrf -> csrf.disable())
                 .logout(logoutSpec -> logoutSpec.logoutSuccessHandler(oidcLogoutSuccessHandler()))
         ;
 
@@ -46,7 +49,7 @@ public class SecurityConfig {
     @Bean
     public ServerLogoutSuccessHandler oidcLogoutSuccessHandler() {
         OidcClientInitiatedServerLogoutSuccessHandler successHandler = new OidcClientInitiatedServerLogoutSuccessHandler(registrationRepository);
-        successHandler.setPostLogoutRedirectUri("http://localhost:8100/frontend");
+        successHandler.setPostLogoutRedirectUri("http://homelab.adozaraz.com:8100/");
         return successHandler;
     }
 }
