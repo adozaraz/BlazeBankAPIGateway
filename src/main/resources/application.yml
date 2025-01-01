@@ -1,17 +1,17 @@
 spring:
   application:
-    name: blazebankapigateway
+    name: ${APP_NAME:blazebankapigateway}
   security:
     oauth2:
       client:
         provider:
           external:
-            issuer-uri: ${KEYCLOAK_URL:http://localhost:8080}/realms/blazebank
+            issuer-uri: ${KEYCLOAK_URL:http://localhost:8080}/realms/${REALM_NAME:blazebank}
         registration:
           external:
             provider: external
-            client-name: blazebank
-            client-id: blazebank
+            client-name: ${CLIENT_NAME:blazebank}
+            client-id: ${CLIENT_ID:blazebank}
             scope:
               - openid
               - offline_access
@@ -38,3 +38,7 @@ eureka:
 
 frontend:
   url: ${FRONTEND_URL:http://localhost:4200}
+
+backend:
+  cardServiceUri: ${CARD_SERVICE_URI:lb://blazebankcardservice/card}
+  paymentServiceUri: ${PAYMENT_SERVICE_URI:lb://blazebankpaymentservice/payment}

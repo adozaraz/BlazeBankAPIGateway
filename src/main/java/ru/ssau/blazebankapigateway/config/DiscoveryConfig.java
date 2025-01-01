@@ -14,6 +14,12 @@ public class DiscoveryConfig {
     @Value("${frontend.url}")
     private String frontendUrl;
 
+    @Value("${backend.cardServiceUri}")
+    private String cardServiceURI;
+
+    @Value("${backend.paymentServiceUri}")
+    private String paymentServiceURI;
+
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         if (frontendUrl.endsWith("/")) {
@@ -22,10 +28,10 @@ public class DiscoveryConfig {
         return builder.routes()
                 .route("card-service", r -> r.path("/card/**")
                         .filters(gatewayFilterSpec -> gatewayFilterSpec.tokenRelay().removeRequestHeader("Cookie"))
-                        .uri("lb://blazebankcardservice/card"))
+                        .uri(cardServiceURI))
                 .route("payment-service", r -> r.path("/payment/**")
                         .filters(gatewayFilterSpec -> gatewayFilterSpec.tokenRelay().removeRequestHeader("Cookie"))
-                        .uri("lb://blazebankpaymentservice/payment"))
+                        .uri(paymentServiceURI))
                 .route("frontend-service", r -> r.path("/**")
                         .uri(frontendUrl))
                 .build();
